@@ -1,6 +1,10 @@
 #pragma once
+
 #include <vector>
 #include <string>
+#include <algorithm>
+#include <stdexcept>
+#include <cmath>
 
 using uchar = unsigned char;
 
@@ -13,24 +17,9 @@ public:
 	);
 
 	std::string next              ();
-	void        preset            (const std::vector<uchar>& array);
-	void        setLimit          (const std::vector<uchar>& array);
-	long        getMaxCombinations() const;
-
-private:
-	void        init();
-
-private:
-	int                 m_level    = 0;
-	int                 m_maxLevel = 0;
-
-	std::vector<Slider> m_sliderBox;
-	std::vector<uchar>  m_userCharArray;
-	
-	std::string         m_limitArray;
-
-	bool                m_hasLimit         = false;
-	bool                m_isLimitTriggered = false;
+	bool        preset            (const std::vector<uchar>& array);
+	bool        setLimit          (const std::vector<uchar>& array);
+	double      getMaxCombinations() const;
   
 private:
   
@@ -51,6 +40,21 @@ private:
 
 		const int m_trigger;
 	};
+
+private:
+	void        init();
+
+private:
+	int                 m_level    = 0;
+	int                 m_maxLevel = 0;
+
+	std::vector<Slider> m_sliderBox;
+	std::vector<uchar>  m_userCharArray;
+	
+	std::string         m_limitArray;
+
+	bool                m_hasLimit         = false;
+	bool                m_isLimitTriggered = false;
 };
 
 
@@ -129,46 +133,72 @@ std::string Enumerator::next()
 	return ret;
 }
 
-void Enumerator::preset(const std::vector<uchar>& array)
+bool Enumerator::preset(const std::vector<uchar>& array)
 {
-	if (array.empty())
-	{
-		return;
-	}
+	//TODO: need to refactor this
 
-	for (int i = 0; i < array.size(); ++i)
-	{
-		if (i == m_maxLevel) break;
+    if (array.empty() || array.size() > m_maxLevel)
+    {
+        return false;
+    }
 
-		for (int j = 0; j < m_userCharArray.size(); ++j)
-		{
-			if (array[j] == array[i])
-			{
-				m_sliderBox[i].set(j);
+    for (const auto& elem : array)
+    {
+        if (std::find(m_userCharArray.begin(), m_userCharArray.end(), elem) == m_userCharArray.end())
+        {
+            return false;
+        }
+    }
 
-				if (i > 0)
-				{
-					m_level++;
-				}
-			}
-		}
-	}
+    for (int i = 0; i < array.size(); ++i)
+    {
+        if (i == m_maxLevel) break;
+
+        for (int j = 0; j < m_userCharArray.size(); ++j)
+        {
+            if (m_userCharArray[j] == array[i])
+            {
+                m_sliderBox[i].set(j);
+
+                if (i > 0)
+                {
+                    m_level++;
+                }
+            }
+        }
+    }
+    return true;
 }
 
-void Enumerator::setLimit(const std::vector<uchar>& array)
+bool Enumerator::setLimit(const std::vector<uchar>& array)
 {
-	if (array.empty())
-	{
-		return;
-	}
+	//TODO: need to refactor this
+	
+    if (array.empty() || array.size() > m_maxLevel)
+    {
+        return false;
+    }
 
-	for (int i = 0; i < array.size(); ++i)
-	{
-		if (i == m_maxLevel) break;
-		m_limitArray += array[i];
-	}
+    for (const auto& elem : array)
+    {
+        if (std::find(m_userCharArray.begin(), m_userCharArray.end(), elem) == m_userCharArray.end())
+        {
+            return false;
+        }
+    }
 
-	if (!m_limitArray.empty()) m_hasLimit = true;
+    for (int i = 0; i < array.size(); ++i)
+    {
+        if (i == m_maxLevel) break;
+        m_limitArray += array[i];
+    }
+
+    if (!m_limitArray.empty()) 
+    {
+        m_hasLimit = true;
+        return true;
+    }
+    return false;
 }
 
 void Enumerator::init()
@@ -179,9 +209,9 @@ void Enumerator::init()
 	}
 }
 
-long Enumerator::getMaxCombinations() const
+double Enumerator::getMaxCombinations() const
 {
-	long ret = 0;
+	double ret = 0;
 	for (int i = 1; i <= m_maxLevel; ++i)
 	{
 		ret += pow(m_userCharArray.size(), i);
