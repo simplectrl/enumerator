@@ -5,13 +5,13 @@
 The Enumerator is a library designed for generating combinations based on a given array of characters. It employs a unique approach that simulates the workings of a mechanical counter, where each "slider" corresponds to a specific character.
 
                 +-----+    +-----+
-                |  A  |    |  Y  |
+                |  A  |    |  A  |
                 +-----+    +-----+
-                |  A  |    |  Y  |
+                |  A  |    |  B  |
                 +-----+    +-----+
-                |  B  |    |  A  |
+                |  A  |    |  C  |
                 +-----+    +-----+
-                |  B  |    |  B  |
+                |  A  |    |  D  |
                 +-----+    +-----+
 
 ## Features
