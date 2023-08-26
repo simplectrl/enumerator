@@ -94,7 +94,7 @@ bool Enumerator::preset(const std::vector<uchar>& array)
 
     for (size_t i = 0; i < array.size(); ++i)
     {
-        auto it = std::find(m_userCharArray.begin(), m_userCharArray.end(), array[i]);
+        auto it = std::find(m_userCharArray.begin(), m_userCharArray.end(), array[array.size() - 1 - i]);
         if (it == m_userCharArray.end())
         {
             return false; 
