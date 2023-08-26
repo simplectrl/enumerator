@@ -2,7 +2,7 @@
 #include <chrono>
 #include <fstream>
 
-#include "enumerator.hpp"
+#include "enum.hpp"
 
 int main() 
 {

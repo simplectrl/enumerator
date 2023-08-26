@@ -2,7 +2,13 @@
 
 ## Overview
 
-The Enumerator is a library designed for generating combinations based on a given array of characters. It employs a unique approach that simulates the workings of a mechanical counter, where each "slider" corresponds to a specific character.
+The Enumerator library is designed for generating combinations based on a given array of characters. It offers two distinct implementations, each with its own advantages and performance characteristics.
+
+## Implementations
+
+## Original Enumerator
+
+This approach simulates the workings of a mechanical counter, where each "slider" corresponds to a specific character.
 
                 +-----+    +-----+
                 |  A  |    |  A  |
@@ -14,17 +20,29 @@ The Enumerator is a library designed for generating combinations based on a give
                 |  A  |    |  D  |
                 +-----+    +-----+
 
-## Features
+## Features:
 
 - Generate combinations based on a provided array of characters.
-- Set a maximum length for combinations.
-- Ability to set an initial state and a limit for combination generation.
+- Set a starting point for combinations using the preset method.
+- Determine the maximum possible combinations with the getMaxCombinations method.
 
-## How to Use the Library
+## How to Use the Enumerator
 
 1. Create an `Enumerator` object by providing the maximum combination length and the character array.
 2. Use the `next()` method to retrieve the next combination.
 3. Optionally, use the `preset()` and `setLimit()` methods to set an initial state and a limit, respectively.
+
+
+
+## Enumerator v1
+
+This is a more optimized version that's approximately 3 times faster than the original implementation but is 3 times slower than `loop_enum`.
+
+## Features:
+
+- Faster combination generation.
+- Simplified internal structure for better performance.
+
 
 ## Comparison with Other Approaches
 
